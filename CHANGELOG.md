@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 - 2026-09-15
+
+- **Pro messages vs Study Snapshots** documented with live UI workflow (References → Snapshot tab; Table batch view).
+- Corrected **Free tier quotas**: 10 Pro messages/month and 10 Study Snapshots/month (was 15).
+- Expanded feature tier table: Papers search vs Pro messages vs Deep reviews vs Snapshots.
+- Session capture cards now include mode, Snapshots taken, and quota notes.
+- UI map: Pro · N steps badge, References Table view, Snapshot tab, follow-up box.
+- reference.md: Snapshot row template for best-3 / runners-up tables.
+
 ## 1.1.0 - 2026-09-15
 
 - New **`browser-consensus.md`**: agent cheat sheet for `cursor-ide-browser` + Consensus.app — 60s workflow, UI map, wait/extract, quotas, failure table, worked example.

@@ -83,6 +83,11 @@ After `browser_snapshot`, look for these **names** (refs change every page — a
 | Synthesis answer | `heading` level 1/2 under the thread | Copy 2–4 sentences + subsections |
 | Consensus Meter | text `Consensus Meter`, Yes/No bar | Record % **and** limitations footnote |
 | References | `button`, name `References` | Opens ranked paper list with DOIs |
+| References views | `radio` Default / Compact / **Table** | Table = batch Snapshot columns |
+| Pro steps badge | `button`, name `Pro · N steps` | Shows search/read pipeline; click to expand |
+| Paper in References | `link` with KEY TAKEAWAY | Opens paper drawer |
+| Snapshot tab | `button`, name `Snapshot` | Per-paper Field/Value table (uses Snapshot quota) |
+| Follow-up box | `textbox`, `Ask a follow up...` | Same-thread narrow follow-up only |
 | Thread in sidebar | `link` with short slug title | Confirms session saved |
 
 **URL after successful search:**
@@ -150,9 +155,12 @@ Copy into your notes / project MD header:
 - Session title: (short slug from sidebar)
 - Full URL (with hash): https://consensus.app/search/.../HASH/
 - Query asked: (exact English string)
+- Mode: Pro message (Deep OFF) | Deep review | Paper search only
 - Synthesis: (2–4 sentences in your words + optional short quote)
-- Meter: Yes X% / No Y% / N papers — plus limitations note if shown
+- Meter: Yes X% / Possibly Y% / N papers — plus limitations note if shown
 - Top DOIs: …
+- Snapshots taken: (paper → Population/Methods/Results one-liner) or "none"
+- Quota note: (e.g. Free tier — 1 Pro message + 2 Snapshots used)
 - Evidence level: Consensus UI
 ```
 
@@ -171,18 +179,69 @@ Generic templates: [reference.md](reference.md#generic-query-skeleton-use-first)
 
 ---
 
-## Free vs Pro quota (plan your sessions)
+## Consensus feature tiers (plan your sessions)
 
-| Feature | Free | Pro |
-|---------|------|-----|
-| Papers search (browse list) | Unlimited | Unlimited |
-| **Pro messages** (AI synthesis — what this skill uses) | **15 / month** | Unlimited |
-| Deep review | 3 / month | 15 / month |
+Source: [Consensus subscription plans](https://help.consensus.app/en/articles/10087865-subscription-plans) (2026).
 
-- **`lite` mode:** 1–2 Pro sessions.
-- **`full` mode:** 4–7 sessions — warn user if on Free tier.
+| Feature | What it does | Free | Pro ($20/mo) |
+|---------|--------------|------|--------------|
+| **Papers search** | Browse paper list from keywords; reads **abstracts** | Unlimited | Unlimited |
+| **Pro messages** | AI synthesis from ~20 papers; reads **full text** when available; Consensus Meter, tables, timelines | **10 / month** | Unlimited |
+| **Deep reviews** | Automated lit review across ~50 papers; builds search strategy | 3 / month | 15 / month |
+| **Study Snapshots** | Structured per-paper extract (methods, sample, outcomes) | **10 / month** | Unlimited |
 
-Use **Paper search** (Tools menu) only when you need a paper list **without** burning a Pro message.
+**This skill primarily uses Pro messages** (Deep toggle **OFF**). Use Deep only when the user explicitly wants a Deep review.
+
+**Quota math for Free tier:**
+- **`lite` mode:** 1–2 Pro sessions + up to 3 Snapshots for best-3 papers.
+- **`full` mode:** 4–7 Pro sessions — **warn user** this may exhaust the monthly Pro budget on Free.
+- Each **Study Snapshot** (opening Snapshot tab on a paper) counts toward the 10/month limit on Free.
+- **Paper search** (sidebar → Tools → Paper search) finds papers **without** burning a Pro message — use when you only need a list.
+
+### Pro messages — what you get
+
+When Deep is **OFF** and you submit a question, Consensus runs a **Pro message** (badge shows `Pro · N steps`):
+
+1. Search the corpus (e.g. `meditation reduce anxiety 4.6M`)
+2. Read abstracts/PDFs of top ~20 papers
+3. Generate synthesis with inline citations
+
+Typical output on the page:
+- **TL;DR heading** (Yes/No answer in one sentence)
+- **Consensus Meter** — Yes / Possibly / Mixed / No percentages (only trust after checking References on the **same** page)
+- Subsections with cited claims
+- **References** panel (right) — ranked papers with KEY TAKEAWAY, badges (META-ANALYSIS, YES/POSSIBLY, etc.)
+- **Follow-up chips** at bottom — open as **new thread** for a different axis; use same-thread follow-up only for narrow clarifications on the same axis
+
+Citation checkmarks: checkmark on a citation = full text used; no checkmark = abstract only.
+
+### Study Snapshots — how to extract per-paper structure
+
+Use Snapshots when tiering runners-up or filling best-3 tables — faster than reading PDFs.
+
+**Method A — single paper (detailed snapshot):**
+
+```
+1. Run a Pro message session (steps A–I above)
+2. browser_click References (open right panel)
+3. browser_click a paper title → paper detail drawer opens
+4. browser_click tab Snapshot
+5. Record Field / Value table (Population, Study count, Methods, Outcomes, Results, …)
+6. Note footer: Extracted N/7 study attributes
+```
+
+**Method B — batch compare (Table view):**
+
+```
+1. Open References panel
+2. browser_click radio Table (top-right of References)
+3. Harvest columns: Title, Answer, Results, Outcomes across top papers
+4. Switch back to Default view for KEY TAKEAWAY badges
+```
+
+**Snapshot counts against Free quota** — batch only papers that will enter best-3 or ★★☆ tier; skip ★☆☆ unless user asks.
+
+**CDP extract for Snapshot tab** (when snapshot YAML is thin): use `Runtime.evaluate` on `document.body.innerText`, slice from `Field` through ~1500 chars.
 
 ---
 
