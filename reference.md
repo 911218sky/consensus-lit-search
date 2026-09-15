@@ -82,21 +82,27 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 - Evidence level: Consensus UI | user paste | Crossref only
 ```
 
-## Browser MCP quick sequence
+## Browser MCP (full guide)
+
+**Agents:** use **[browser-consensus.md](browser-consensus.md)** — UI map, wait strategy, CDP extract, failure table, worked example.
+
+Quick sequence (MCP server **`cursor-ide-browser`**):
 
 ```
-1. browser_tabs { action: "list" }
-2. browser_navigate { url: "https://consensus.app" }
-3. browser_lock { action: "lock" }
-4. browser_snapshot → find search input ref
-5. browser_fill / browser_type → submit query
-6. wait: browser_snapshot loop or CDP until synthesis visible
-7. browser_cdp Runtime.evaluate → document.body.innerText (fallback)
-8. copy URL with hash → paste into MD header
-9. browser_lock { action: "unlock" }
+1. browser_tabs { action: "list" }                    # reuse tab; note viewId
+2. browser_navigate { url: "https://consensus.app" }  # never slug-only /search/... URLs
+3. browser_lock { viewId: "..." }                     # AFTER navigate
+4. browser_snapshot → ref for textbox "Ask the research..."
+5. browser_fill { ref, value: "<one English question>" }
+6. browser_click { ref: "Submit search" }
+7. wait ≤3× (~8s) → browser_snapshot until URL has /search/<slug>/<HASH>/
+8. browser_cdp Runtime.evaluate document.body.innerText  # if snapshot thin
+9. copy hash URL + References DOIs → Crossref verify
+10. browser_lock { action: "unlock" }
+11. New Thread → repeat for next debate axis
 ```
 
-If step 6 fails after reasonable retries → unlock, report blocker, use degradation path in SKILL.md.
+If step 7 fails → unlock, degradation path in SKILL.md. Do not loop snapshots more than ~3 times.
 
 ## Crossref one-liner
 

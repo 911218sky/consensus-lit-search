@@ -2,15 +2,25 @@
 
 A portable Markdown skill for multi-session literature search on [Consensus.app](https://consensus.app), cross-viewpoint verification, best-3 viewpoint triangulation, and structured updates to project markdown.
 
-**Version:** 1.0.1
+**Version:** 1.1.0
 
 ## 30-second start
 
 1. Give the agent your **topic**, **output markdown path**, and mode (`lite` or `full`).
 2. Define **3 debate axes** for *your* field (do not copy hearable/ANC examples unless that is your topic).
-3. Agent opens **one Consensus thread per axis** (browser MCP), or asks you to paste results if the browser is unavailable.
+3. Agent reads **[browser-consensus.md](browser-consensus.md)**, then opens **one Consensus thread per axis** via `cursor-ide-browser` MCP — or degrades honestly if the browser is unavailable.
 4. Agent verifies DOIs with Crossref, picks a **best-3 viewpoint triangle**, tiers runners-up, writes the MD.
 5. Anything labeled EXAMPLE / domain anchor in this repo is **optional** — delete or ignore for other fields.
+
+### Agent: how to use the browser (one glance)
+
+```
+browser_tabs list → browser_navigate https://consensus.app
+→ lock → fill search box → click Submit → wait for hash URL
+→ snapshot / CDP extract → save full URL → unlock → New Thread for next axis
+```
+
+Details, UI labels, quotas, and failure fixes: **[browser-consensus.md](browser-consensus.md)**.
 
 ## What it does
 
@@ -35,9 +45,10 @@ The skill never fabricates DOIs, full-text reads, or Consensus session URLs. Sho
 
 ## Requirements
 
-- **Preferred:** Browser MCP (e.g. `cursor-ide-browser`) + access to Consensus.app (login if required).
+- **Preferred:** Browser MCP **`cursor-ide-browser`** + logged-in Consensus.app — see [browser-consensus.md](browser-consensus.md).
 - Network access for Crossref DOI verification.
-- **Without browser MCP:** agent must use the degradation path (user paste / DOI-only) — install still works; live Consensus automation does not.
+- **Without browser MCP:** degradation path (user paste / DOI-only) — see SKILL.md; never invent session URLs.
+- **Free Consensus:** ~15 Pro messages/month — prefer `lite` mode or warn before `full` (4–7 sessions).
 - Optional: OpenAlex or PDF access — do not block on rate limits or paywalls.
 
 ## Installation
@@ -64,7 +75,8 @@ After installation, ask the assistant to search Consensus for papers on your top
 | File | Purpose |
 |------|---------|
 | `SKILL.md` | Main workflow: axes, multi-session search, degradation, best-3, tiering, MD updates |
-| `reference.md` | Generic query skeleton, browser sequence, MD snippets; optional domain anchors at end |
+| **`browser-consensus.md`** | **Browser MCP cheat sheet — read first for live Consensus search** |
+| `reference.md` | Generic query skeleton, MD snippets; optional domain anchors at end |
 | `examples.md` | Case study only (hearable occlusion) — copy structure, not default jargon |
 
 ## Scope

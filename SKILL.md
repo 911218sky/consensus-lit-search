@@ -1,22 +1,38 @@
 ---
 name: consensus-lit-search
 description: >
-  Multi-session literature search on Consensus.app with cross-viewpoint
-  verification, debate-map synthesis, DOI validation, best-3 viewpoint
-  triangulation, runner-up tiering, and structured updates to project markdown.
-  Use when the user asks to find papers, verify debates, compare opposing claims,
-  deep-dive similar work, cross-check with Consensus, or update literature-review
-  documents. Trigger phrases: Consensus, cross-viewpoint verification, debate map,
-  best-3 triangle, deep dive, counter-evidence.
+  Multi-session literature search on Consensus.app via cursor-ide-browser MCP
+  (see browser-consensus.md first), with cross-viewpoint verification, debate-map
+  synthesis, DOI validation, best-3 viewpoint triangulation, runner-up tiering,
+  and structured updates to project markdown. Use when the user asks to find
+  papers, verify debates, compare opposing claims, deep-dive similar work,
+  cross-check with Consensus, search with browser, or update literature-review
+  documents. Trigger phrases: Consensus, browser, cross-viewpoint verification,
+  debate map, best-3 triangle, deep dive, counter-evidence.
 license: AGPL-3.0-or-later
 metadata:
   short-description: Consensus multi-session lit search with viewpoint triangulation
-  version: 1.0.1
+  version: 1.1.0
 ---
 
 # Consensus Literature Search
 
 Search academic literature through **multiple independent Consensus sessions**, verify opposing viewpoints, pick a **best-3 triangle**, tier runners-up, and write results into the project markdown file the user specifies.
+
+## Browser first (agents: read before calling MCP)
+
+**Using Consensus in Cursor?** Open **[browser-consensus.md](browser-consensus.md)** — 60-second MCP sequence, UI map, wait/extract rules, failure fixes.
+
+**Minimal sequence (MCP server `cursor-ide-browser`):**
+
+1. `browser_tabs` list → reuse Consensus tab if any
+2. `browser_navigate` → `https://consensus.app` (**never** hand-build `/search/slug/` URLs — they 404 without hash)
+3. `browser_lock` → `browser_fill` search box → `browser_click` Submit
+4. Wait ≤3× (~8 s) → `browser_snapshot`; if thin → `browser_cdp` `Runtime.evaluate` `document.body.innerText`
+5. Save **full URL with hash** from address bar → Crossref DOIs → `browser_lock` unlock
+6. **New Thread** per debate axis; repeat
+
+**Stop / degrade** if login blocked, no synthesis after retries, or no browser MCP — see [degradation path](#degradation-path-no-browser-mcp--consensus-blocked). Never invent session URLs or meter numbers.
 
 ## When to use
 
@@ -56,7 +72,7 @@ Copy and track:
 Progress:
 - [ ] 1. Scope: claim, debate axes, year filter, output file path, mode (lite|full)
 - [ ] 2. Confirm Consensus access OR activate degradation path
-- [ ] 3. Open ≥1 Consensus session per debate axis (see reference.md)
+- [ ] 3. Open ≥1 Consensus session per debate axis ([browser-consensus.md](browser-consensus.md))
 - [ ] 4. Extract: synthesis, meter, key papers, FOR/AGAINST if shown
 - [ ] 5. Crossref-verify DOIs (OpenAlex only if budget allows)
 - [ ] 6. Pick best-3 triangle (3 non-overlapping viewpoints for THIS topic)
@@ -107,16 +123,18 @@ If `cursor-ide-browser` (or equivalent) is missing, login/CAPTCHA blocks, or Con
 
 ### When browser MCP is available
 
-1. `browser_tabs` list → find existing Consensus tab or open `https://consensus.app`
-2. **New search per axis** — New Thread / fresh navigate; do not reuse one thread for all axes
-3. Query patterns (English works best on Consensus) — see [reference.md](reference.md) generic skeleton
-4. After each search completes, **save full URL including hash** from sidebar or address bar
-5. Extract via `browser_snapshot` or `browser_cdp` → `Runtime.evaluate` on `document.body.innerText` when snapshot is thin
-6. Record: Consensus synthesis, Yes/No meter (if any), top 5–10 references, limitations block
+Follow **[browser-consensus.md](browser-consensus.md)** end-to-end. Summary:
 
-**Stop waiting** if synthesis never appears after repeated snapshots / reasonable retries: report failure and enter degradation path — do not loop forever.
+| Step | Action |
+|------|--------|
+| Open | `browser_navigate` `https://consensus.app` |
+| Search | One English question → Submit (**Deep** off unless user asked) |
+| Wait | ≤3 snapshot cycles (~8 s apart) for synthesis + hash URL |
+| Extract | Snapshot → References panel; fallback `browser_cdp` text dump |
+| Save | Full URL `.../search/<slug>/<HASH>/` + session capture card |
+| Next axis | **New Thread** — never one mega-thread |
 
-**Session budget:** `full` 4–7 sessions; `lite` 1–2.
+Query patterns: [reference.md](reference.md). **Session budget:** `full` 4–7 Pro messages; `lite` 1–2. Free tier ≈15 Pro messages/month — tell user if `full` may exhaust quota.
 
 ## Step 3 — Verify DOIs
 
@@ -221,5 +239,6 @@ Extract **both** Consensus synthesis **and** limitations / meter footnotes on th
 
 ## Additional resources
 
+- **Browser MCP + Consensus UI:** [browser-consensus.md](browser-consensus.md) ← start here for live search
 - Query templates and MD snippets: [reference.md](reference.md)
 - Worked example (hearable occlusion — structure only): [examples.md](examples.md)
