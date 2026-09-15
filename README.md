@@ -2,7 +2,7 @@
 
 A portable Markdown skill for multi-session literature search on [Consensus.app](https://consensus.app), cross-viewpoint verification, best-3 viewpoint triangulation, and structured updates to project markdown.
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 
 ## 30-second start
 
@@ -25,7 +25,7 @@ Details, UI labels, quotas, and failure fixes: **[browser-consensus.md](browser-
 ## What it does
 
 - Runs **separate Consensus sessions per debate axis** instead of one overloaded thread.
-- Extracts synthesis, Yes/No meters, references, and limitations from each session.
+- Extracts synthesis, Yes/No meters, references, limitations, and **Study Snapshots** (methods/sample/outcomes) from each session.
 - Verifies DOIs via Crossref before citing papers.
 - Picks a **best-3 triangle**: three papers that represent **distinct opposing viewpoints**, not three papers that agree.
 - Tiers runners-up (must cite / strong backup / appendix) to keep the literature tree focused.
@@ -48,7 +48,7 @@ The skill never fabricates DOIs, full-text reads, or Consensus session URLs. Sho
 - **Preferred:** Browser MCP **`cursor-ide-browser`** + logged-in Consensus.app — see [browser-consensus.md](browser-consensus.md).
 - Network access for Crossref DOI verification.
 - **Without browser MCP:** degradation path (user paste / DOI-only) — see SKILL.md; never invent session URLs.
-- **Free Consensus:** ~15 Pro messages/month — prefer `lite` mode or warn before `full` (4–7 sessions).
+- **Free Consensus:** ~10 Pro messages + 10 Study Snapshots/month — prefer `lite` mode or warn before `full` (4–7 sessions).
 - Optional: OpenAlex or PDF access — do not block on rate limits or paywalls.
 
 ## Installation

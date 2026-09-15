@@ -12,7 +12,7 @@ description: >
 license: AGPL-3.0-or-later
 metadata:
   short-description: Consensus multi-session lit search with viewpoint triangulation
-  version: 1.1.0
+  version: 1.2.0
 ---
 
 # Consensus Literature Search
@@ -73,7 +73,7 @@ Progress:
 - [ ] 1. Scope: claim, debate axes, year filter, output file path, mode (lite|full)
 - [ ] 2. Confirm Consensus access OR activate degradation path
 - [ ] 3. Open ≥1 Consensus session per debate axis ([browser-consensus.md](browser-consensus.md))
-- [ ] 4. Extract: synthesis, meter, key papers, FOR/AGAINST if shown
+- [ ] 4. Extract: synthesis, meter, key papers, FOR/AGAINST if shown; Snapshot tab for best-3/★★☆ only
 - [ ] 5. Crossref-verify DOIs (OpenAlex only if budget allows)
 - [ ] 6. Pick best-3 triangle (3 non-overlapping viewpoints for THIS topic)
 - [ ] 7. Tier runners-up (★★★ / ★★☆ / ★☆☆ or equivalent)
@@ -134,7 +134,9 @@ Follow **[browser-consensus.md](browser-consensus.md)** end-to-end. Summary:
 | Save | Full URL `.../search/<slug>/<HASH>/` + session capture card |
 | Next axis | **New Thread** — never one mega-thread |
 
-Query patterns: [reference.md](reference.md). **Session budget:** `full` 4–7 Pro messages; `lite` 1–2. Free tier ≈15 Pro messages/month — tell user if `full` may exhaust quota.
+Query patterns: [reference.md](reference.md). **Session budget:** `full` 4–7 Pro messages; `lite` 1–2. Free tier ≈**10 Pro messages + 10 Study Snapshots**/month — tell user if `full` may exhaust quota.
+
+After each Pro session, optionally open **Study Snapshots** ([browser-consensus.md](browser-consensus.md#study-snapshots--how-to-extract-per-paper-structure)) for best-3 / ★★☆ papers only — do not snapshot every Reference on Free tier.
 
 ## Step 3 — Verify DOIs
 

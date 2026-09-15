@@ -59,9 +59,13 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 | UI element | Use |
 |------------|-----|
 | Top synthesis paragraph | Draft debate-map summary row |
+| Pro · N steps badge | Confirm Pro message ran (not Paper search only) |
 | Yes/No meter | Report both result **and** limitations on same page |
 | References list | DOI harvest list; verify each via Crossref |
-| Copilot follow-ups | Seed next **separate** session, not inline only |
+| KEY TAKEAWAY + YES/POSSIBLY badges | Quick stance per paper in Default view |
+| References **Table** view | Batch compare Results/Outcomes (lite Snapshot) |
+| Paper **Snapshot** tab | Population, Methods, Study count, Outcomes, Results |
+| Follow-up chips | Seed next **separate** session for new axis; same-thread only for narrow follow-up |
 
 ### URL rules
 
@@ -76,10 +80,21 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 - Session title:
 - Full URL (with hash):
 - Query asked:
+- Mode: Pro message | Deep review | Paper search
 - Synthesis (2–4 sentences):
 - Meter (if any) + limitations note:
 - Top DOIs harvested:
+- Snapshots: (Author YEAR → Methods / N / key result) or none
+- Quota spent: (optional — Pro messages + Snapshots used this run)
 - Evidence level: Consensus UI | user paste | Crossref only
+```
+
+### Study Snapshot row (per paper)
+
+```markdown
+| Author YEAR | Population | Methods | Study count | Outcomes | Results (1 line) |
+|---|---|---|---:|---|---|
+| Goyal 2014 | Diverse adult clinical populations | Systematic review + meta-analysis | 47 | Anxiety, depression, pain, … | Mindfulness moderately reduced anxiety; no benefit vs active controls |
 ```
 
 ## Browser MCP (full guide)
