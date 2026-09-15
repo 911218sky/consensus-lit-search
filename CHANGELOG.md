@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 - 2026-09-15
+
+- New **`browser-consensus.md`**: agent cheat sheet for `cursor-ide-browser` + Consensus.app — 60s workflow, UI map, wait/extract, quotas, failure table, worked example.
+- **SKILL.md**: "Browser first" section at top; Step 2 points to browser guide; Free-tier Pro message budget note.
+- **reference.md** / **README.md**: browser section expanded; README one-glance MCP sequence.
+
 ## 1.0.1 - 2026-09-15
 
 - De-domain default scaffolds: blank debate-axis and best-3 slot tables; hearable roles marked EXAMPLE ONLY.
