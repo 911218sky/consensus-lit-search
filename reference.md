@@ -1,12 +1,32 @@
 # Consensus Lit Search — Reference
 
-Query templates, browser MCP sequence, markdown snippets, and optional domain anchors.
+Generic query templates, browser MCP sequence, markdown snippets, then optional domain anchors.
 
-## Consensus query templates
+## Generic query skeleton (use first)
 
-Replace `[TOPIC]` / `[AUTHOR YEAR]` as needed. Prefer one clear question per session.
+Replace `[TOPIC]` / `[CLAIM]` / `[AUTHOR YEAR]` / `[DOI]`. One clear question per session.
 
-### Domain example: hearable occlusion / PANC2.1 (English)
+```
+Session: overview
+Query: [TOPIC] [key outcome] evidence review [year range]
+
+Session: viewpoint A vs B
+Query: Does [measure or intervention] [predict / cause / correlate with] [outcome] at [group|individual] level?
+
+Session: method debate
+Query: [method A] versus [method B] systematic error bias validity [domain]
+
+Session: counter-evidence
+Query: counter evidence to [AUTHOR YEAR] [CLAIM]
+
+Session: similar papers
+Query: papers similar to doi [10.xxxx/yyyy] [TOPIC]
+
+Session: lab vs real-world
+Query: [intervention] efficacy limitations real-world [population]
+```
+
+### Domain example: hearable occlusion (English) — skip if unrelated
 
 ```
 Session: occlusion overview
@@ -38,7 +58,7 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 
 | UI element | Use |
 |------------|-----|
-| Top synthesis paragraph | Draft 辯論地圖 summary row |
+| Top synthesis paragraph | Draft debate-map summary row |
 | Yes/No meter | Report both result **and** limitations on same page |
 | References list | DOI harvest list; verify each via Crossref |
 | Copilot follow-ups | Seed next **separate** session, not inline only |
@@ -48,6 +68,19 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 - ✅ `https://consensus.app/search/slug-name/HASH_ID/`
 - ❌ `https://consensus.app/search/slug-name/` (often 404)
 - Copy from browser address bar **after** search finishes loading
+- No real session → do not invent a URL (see SKILL.md degradation path)
+
+### Session capture card (copy per session)
+
+```
+- Session title:
+- Full URL (with hash):
+- Query asked:
+- Synthesis (2–4 sentences):
+- Meter (if any) + limitations note:
+- Top DOIs harvested:
+- Evidence level: Consensus UI | user paste | Crossref only
+```
 
 ## Browser MCP quick sequence
 
@@ -63,6 +96,8 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 9. browser_lock { action: "unlock" }
 ```
 
+If step 6 fails after reasonable retries → unlock, report blocker, use degradation path in SKILL.md.
+
 ## Crossref one-liner
 
 ```bash
@@ -72,37 +107,40 @@ curl -s "https://api.crossref.org/works/10.1051/aacus/2025055" \
 
 Batch pattern: loop DOIs from Consensus References; skip on HTTP 404.
 
-## MD section templates
+## MD section templates (language-neutral / project-neutral)
+
+Adapt language to the user. Do **not** insert domain jargon unless the project uses it.
 
 ### Header block
 
 ```markdown
-> 整理日期：YYYY-MM-DD（Consensus 多 session 交叉驗證；Crossref 核 DOI）
-> 查詢方法：見 [`.agents/skills/consensus-lit-search/SKILL.md`](../.agents/skills/consensus-lit-search/SKILL.md)
-> Consensus threads（YYYY-MM-DD）：
+> Date: YYYY-MM-DD (multi-session Consensus cross-check; Crossref DOI verify)
+> Method: [consensus-lit-search](https://github.com/911218sky/consensus-lit-search)
+> Consensus threads (YYYY-MM-DD):
 > - [Session Title](full-url-with-hash/)
+> Evidence note: Consensus UI | user paste | Crossref only
 ```
 
 ### Best-3 triangle
 
 ```markdown
-## 若只講 3 篇（Consensus 三角架｜三種對立觀點）
+## Best 3 papers (viewpoint triangle)
 
-| # | 觀點 | 論文 | DOI | 報告一句 |
+| # | Viewpoint | Paper | DOI | One-liner |
 |---:|---|---|---|---|
 | 1 | **…** | Author et al. YEAR, *Venue* | [10.xxxx/yyyy](https://doi.org/10.xxxx/yyyy) | … |
 | 2 | **…** | … | … | … |
 | 3 | **…** | … | … | … |
 
-**30 秒串講：** … → Conditional Go。
+**30-second narrative:** … → [project verdict in the user's terms].
 ```
 
 ### Runners-up table
 
 ```markdown
-## 延伸推薦（Consensus 驗證｜仍值得讀／深入）
+## Runners-up (verified / worth a deep dive)
 
-| 優先 | 論文 | DOI | 觀點／角色 | 何時深入 |
+| Priority | Paper | DOI | Role | When to use |
 |:---:|---|---|---|---|
 | ★★☆ | … | [10.xxxx/yyyy](https://doi.org/10.xxxx/yyyy) | … | … |
 ```
@@ -110,24 +148,25 @@ Batch pattern: loop DOIs from Consensus References; skip on HTTP 404.
 ### Debate map row
 
 ```markdown
-### 辯題 X：…
+### Debate X: …
 
-| 立場 | 代表文獻 | 他們說什麼 | 對 PANC2.1 的啟示 |
+| Position | Key papers | What they claim | Implication for this project |
 |---|---|---|---|
-| **…** | Author YEAR（`10.xxxx/yyyy`） | … | … |
+| **…** | Author YEAR (`10.xxxx/yyyy`) | … | … |
 | **…** | … | … | … |
 
-**Consensus 合成句（可原封不動講）：** 「…」
+**Consensus synthesis (only if session or paste exists):** "…"
 ```
 
 ### Evidence scope footer
 
 ```markdown
-## 證據範圍（誠實標註）
+## Evidence scope
 
-- 本檔整理自 Consensus N session + Crossref；多數為 metadata + Consensus 合成 + 摘要。
-- **YYYY-MM-DD 新核 DOI**：…
-- PDF 未取得時標註出版社阻擋，不宣稱 full-text read。
+- Sources: Consensus N session(s) and/or user paste + Crossref; mostly metadata + synthesis + abstracts unless noted.
+- **YYYY-MM-DD DOIs verified:** …
+- If Consensus UI was not run: state degradation path used; do not list fake session URLs.
+- PDFs not obtained: mark paywall/block; do not claim full-text read.
 ```
 
 ## Best-3 selection rubric
@@ -135,14 +174,20 @@ Batch pattern: loop DOIs from Consensus References; skip on HTTP 404.
 Score each candidate 0–2 on:
 
 1. **Viewpoint distinctness** — not redundant with other two
-2. **Decision relevance** — changes what PANC2.1 can claim
+2. **Decision relevance** — changes what **this project** can claim
 3. **Evidence quality** — peer-reviewed, sample size, method clarity
-4. **Recency** — 2024–2026 bonus if tie-break
+4. **Recency** — bonus if tie-break (adjust year window to the topic)
 5. **DOI verified** — mandatory gate
 
 Minimum total 6/10 to enter triangle; runners-up 4–5.
 
-## Domain example anchors (DOI quick ref — hearable occlusion)
+---
+
+## Domain anchors (OPTIONAL — hearable occlusion case study)
+
+Only use when the user's topic is hearable ANC / occlusion / own-voice. Otherwise ignore this entire section. Full walkthrough: [examples.md](examples.md).
+
+### DOI quick ref
 
 | Paper | DOI |
 |-------|-----|
@@ -155,9 +200,7 @@ Minimum total 6/10 to enter triangle; runners-up 4–5.
 | Moore 2026 | 10.1007/s10162-026-01031-5 |
 | Ohlenbusch 2025 | 10.1186/s13636-025-00418-1 |
 
-Update this table when new core papers are promoted to ★★★.
-
-## Known Consensus session URLs (PANC2.1, 2026-09-15)
+### Known Consensus session URLs (2026-09-15)
 
 | Session | Full URL |
 |---------|----------|

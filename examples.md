@@ -1,5 +1,8 @@
 # Consensus Lit Search — Worked Example (PANC2.1)
 
+> **Case study only.** Copy the *structure* (multi-session list, best-3 table, stop rules).  
+> Do **not** treat PANC jargon, DOIs, or Conditional Go as defaults for unrelated topics.
+
 Case study from 2026-09-15: hearable ANC, occlusion, and own-voice naturalness literature. Reuse the **session structure and query patterns** for other domains; replace papers and debate axes accordingly.
 
 ## 任務定義
