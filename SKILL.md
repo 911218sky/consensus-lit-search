@@ -4,15 +4,19 @@ description: >
   Multi-session literature search on Consensus.app via cursor-ide-browser MCP
   (see browser-consensus.md first), with cross-viewpoint verification, debate-map
   synthesis, DOI validation, best-3 viewpoint triangulation, runner-up tiering,
-  and structured updates to project markdown. Use when the user asks to find
-  papers, verify debates, compare opposing claims, deep-dive similar work,
-  cross-check with Consensus, search with browser, or update literature-review
-  documents. Trigger phrases: Consensus, browser, cross-viewpoint verification,
-  debate map, best-3 triangle, deep dive, counter-evidence.
+  legal OA/PDF download to project pdfs/ (see browser-pdf-download.md for
+  OpenAlex/Unpaywall/curl and browser-fetch when DataDome blocks), local path
+  indexing, and structured updates to project markdown. Use when the user asks
+  to find papers, download PDFs, fetch full text, verify debates, compare
+  opposing claims, deep-dive similar work, cross-check with Consensus, search
+  with browser, or update literature-review documents. Trigger phrases:
+  Consensus, browser, download PDF, full text, OA, literature folder, DataDome,
+  cross-viewpoint verification, debate map, best-3 triangle, deep dive,
+  counter-evidence.
 license: AGPL-3.0-or-later
 metadata:
   short-description: Consensus multi-session lit search with viewpoint triangulation
-  version: 1.2.0
+  version: 1.3.1
 ---
 
 # Consensus Literature Search
@@ -23,6 +27,8 @@ Search academic literature through **multiple independent Consensus sessions**, 
 
 **Using Consensus in Cursor?** Open **[browser-consensus.md](browser-consensus.md)** — 60-second MCP sequence, UI map, wait/extract rules, failure fixes.
 
+**Need PDFs / full text?** Open **[browser-pdf-download.md](browser-pdf-download.md)** — OpenAlex OA → curl → browser `fetch`+base64 when DataDome/403; index local paths; never claim full-text without a real PDF.
+
 **Minimal sequence (MCP server `cursor-ide-browser`):**
 
 1. `browser_tabs` list → reuse Consensus tab if any
@@ -31,6 +37,7 @@ Search academic literature through **multiple independent Consensus sessions**, 
 4. Wait ≤3× (~8 s) → `browser_snapshot`; if thin → `browser_cdp` `Runtime.evaluate` `document.body.innerText`
 5. Save **full URL with hash** from address bar → Crossref DOIs → `browser_lock` unlock
 6. **New Thread** per debate axis; repeat
+7. After ★★★ / user “download all PDFs”: follow [browser-pdf-download.md](browser-pdf-download.md); prefer project `pdfs/` over re-fetching
 
 **Stop / degrade** if login blocked, no synthesis after retries, or no browser MCP — see [degradation path](#degradation-path-no-browser-mcp--consensus-blocked). Never invent session URLs or meter numbers.
 
@@ -40,6 +47,7 @@ Search academic literature through **multiple independent Consensus sessions**, 
 - Picking **best 3 papers** that represent distinct positions
 - Updating a project literature markdown file after Consensus exploration
 - User says: use Consensus, cross-viewpoint verification, debate map, best-3, deep dive, counter-evidence
+- User says: download PDF, full text, OA, put papers in literature folder, DataDome / curl 403
 
 ## Non-negotiables
 
@@ -50,6 +58,8 @@ Search academic literature through **multiple independent Consensus sessions**, 
 5. **Save full Consensus URLs** including hash IDs; bare slug URLs often 404.
 6. **Never invent Consensus sessions** — if browser/Consensus is unavailable, degrade (below); do not write fake session URLs, meters, or synthesis quotes.
 7. **Domain examples are optional** — hearable/ANC/occlusion text in this skill is example-only; replace axes and slot roles for the user's topic unless they ask to keep that domain.
+8. **Legal PDF only** — publisher OA, author pages, arXiv, PMC, Unpaywall/OpenAlex `oa_url`; no Sci-Hub. Prefer local `pdfs/` after first successful download.
+9. **curl 403 → browser fetch** — see [browser-pdf-download.md](browser-pdf-download.md); do not leave HTML challenge pages named `.pdf`.
 
 ## Modes
 
@@ -80,6 +90,7 @@ Progress:
 - [ ] 8. Update project MD sections (template in reference.md)
 - [ ] 9. Log session URLs with hash IDs (only if real sessions ran)
 - [ ] 10. Mark evidence scope honestly (abstract vs full text)
+- [ ] 11. (If user asked for PDFs) Download ★★★ / listed DOIs via [browser-pdf-download.md](browser-pdf-download.md); update local path index
 ```
 
 ## Step 1 — Define debate axes
@@ -150,8 +161,18 @@ print(m.get('title',['?'])[0], m.get('published-print') or m.get('published-onli
 ```
 
 - If Crossref empty or rate-limited: retry once; note in evidence scope
-- OpenAlex: optional; often rate-limited — do not block on it
-- PDF download may hit paywalls or bot protection; cite DOI + abstract only
+- OpenAlex: optional for metadata; **required path for OA PDF URL** when downloading ([browser-pdf-download.md](browser-pdf-download.md))
+- PDF download may hit paywalls or bot protection; cite DOI + abstract only; never invent “PDF obtained”
+
+## Step 3b — Download PDFs to project (when asked)
+
+Default: **do not** mass-download every Reference. Run this step when the user asks for PDFs / full text, or after ★★★ are locked and the user wants a local literature folder.
+
+1. Check existing `pdfs/` + any `LOCAL_PDF*.md` index.
+2. Follow **[browser-pdf-download.md](browser-pdf-download.md)** decision tree (OpenAlex → curl → browser fetch on 403).
+3. Validate with `file` / `pdfinfo` (`PDF document`, not HTML).
+4. Update the project local-path index; link from literature MD entries.
+5. Report counts: OK / paywalled / blocked / need-manual.
 
 ## Step 4 — Best-3 triangle
 
@@ -242,5 +263,6 @@ Extract **both** Consensus synthesis **and** limitations / meter footnotes on th
 ## Additional resources
 
 - **Browser MCP + Consensus UI:** [browser-consensus.md](browser-consensus.md) ← start here for live search
+- **PDF / literature-folder download:** [browser-pdf-download.md](browser-pdf-download.md) ← OA, DataDome, local index
 - Query templates and MD snippets: [reference.md](reference.md)
 - Worked example (hearable occlusion — structure only): [examples.md](examples.md)

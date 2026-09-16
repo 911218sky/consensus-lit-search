@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.1 - 2026-09-16
+
+- **English-only skill prose:** rewrote [browser-pdf-download.md](browser-pdf-download.md) and [examples.md](examples.md) in full English (Chinese only as literal project file paths).
+- **browser-pdf-download.md**: WSL path for CDP browser-logs (`/mnt/c/Users/…`); Blau 2025 DataDome success note.
+- Version bump to 1.3.1.
+
+## 1.3.0 - 2026-09-16
+
+- New **[browser-pdf-download.md](browser-pdf-download.md)**: legal OA PDF pipeline (OpenAlex → curl → browser `fetch`+base64 for DataDome/403), figure extract, local path index, failure table.
+- **SKILL.md**: Step 3b download when user asks; non-negotiables for legal PDF + 403→browser; checklist item 11; trigger phrases for PDF/full text.
+- Version bump to 1.3.0.
+
 ## 1.2.0 - 2026-09-15
 
 - **Pro messages vs Study Snapshots** documented with live UI workflow (References → Snapshot tab; Table batch view).
