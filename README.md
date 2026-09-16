@@ -2,7 +2,7 @@
 
 A portable Markdown skill for multi-session literature search on [Consensus.app](https://consensus.app), cross-viewpoint verification, best-3 viewpoint triangulation, and structured updates to project markdown.
 
-**Version:** 1.2.0
+**Version:** 1.3.1
 
 ## 30-second start
 
@@ -10,7 +10,8 @@ A portable Markdown skill for multi-session literature search on [Consensus.app]
 2. Define **3 debate axes** for *your* field (do not copy hearable/ANC examples unless that is your topic).
 3. Agent reads **[browser-consensus.md](browser-consensus.md)**, then opens **one Consensus thread per axis** via `cursor-ide-browser` MCP — or degrades honestly if the browser is unavailable.
 4. Agent verifies DOIs with Crossref, picks a **best-3 viewpoint triangle**, tiers runners-up, writes the MD.
-5. Anything labeled EXAMPLE / domain anchor in this repo is **optional** — delete or ignore for other fields.
+5. To **download PDFs** into a literature folder: agent follows **[browser-pdf-download.md](browser-pdf-download.md)** (OpenAlex OA → curl → browser fetch if DataDome).
+6. Anything labeled EXAMPLE / domain anchor in this repo is **optional** — delete or ignore for other fields.
 
 ### Agent: how to use the browser (one glance)
 
@@ -20,13 +21,15 @@ browser_tabs list → browser_navigate https://consensus.app
 → snapshot / CDP extract → save full URL → unlock → New Thread for next axis
 ```
 
-Details, UI labels, quotas, and failure fixes: **[browser-consensus.md](browser-consensus.md)**.
+Details, UI labels, quotas, and failure fixes: **[browser-consensus.md](browser-consensus.md)**.  
+PDF / OA download (including DataDome workaround): **[browser-pdf-download.md](browser-pdf-download.md)**.
 
 ## What it does
 
 - Runs **separate Consensus sessions per debate axis** instead of one overloaded thread.
 - Extracts synthesis, Yes/No meters, references, limitations, and **Study Snapshots** (methods/sample/outcomes) from each session.
 - Verifies DOIs via Crossref before citing papers.
+- Downloads **legal OA PDFs** to project `pdfs/` when asked; indexes local paths; uses browser session fetch when curl is bot-blocked.
 - Picks a **best-3 triangle**: three papers that represent **distinct opposing viewpoints**, not three papers that agree.
 - Tiers runners-up (must cite / strong backup / appendix) to keep the literature tree focused.
 - Writes structured sections into project markdown: best-3 table, debate map, runners-up, evidence scope.
