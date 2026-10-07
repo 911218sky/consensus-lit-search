@@ -66,6 +66,8 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 | References **Table** view | Batch compare Results/Outcomes (lite Snapshot) |
 | Paper **Snapshot** tab | Population, Methods, Study count, Outcomes, Results |
 | Follow-up chips | Seed next **separate** session for new axis; same-thread only for narrow follow-up |
+| Sidebar **Paper search** | List-only search (title/author/DOI/keywords); no Meter |
+| Sidebar **Citation Graph** | Seed-based citation map; harvest DOIs (not persisted in beta) |
 
 ### URL rules
 
@@ -80,14 +82,25 @@ Query: papers similar to doi [10.xxxx/yyyy] own voice occlusion
 - Session title:
 - Full URL (with hash):
 - Query asked:
-- Mode: Pro message | Deep review | Paper search
-- Synthesis (2–4 sentences):
+- Mode: Pro message | Deep review | Paper search | Citation Graph
+- Synthesis (2–4 sentences): (Pro/Deep only; N/A for Paper search / Graph)
 - Meter (if any) + limitations note:
 - Top DOIs harvested:
+- Citation Graph seeds / density / neighbor DOIs: (or N/A)
 - Snapshots: (Author YEAR → Methods / N / key result) or none
 - Quota spent: (optional — Pro messages + Snapshots used this run)
 - Evidence level: Consensus UI | user paste | Crossref only
 ```
+
+### When to use which Consensus tool
+
+| Goal | Tool | Burns Pro? |
+|------|------|------------|
+| Answer a research question with synthesis | Pro message | Yes |
+| Broad automated lit review | Deep | Deep quota |
+| Find papers by phrase / title / author / DOI | **Paper search** | No |
+| Expand around known ★★★ seeds | **Citation Graph** | No (graph not saved) |
+| Structured methods/N/outcomes extract | Study Snapshot | Snapshot quota |
 
 ### Study Snapshot row (per paper)
 

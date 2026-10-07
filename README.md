@@ -2,7 +2,7 @@
 
 A portable Markdown skill for multi-session literature search on [Consensus.app](https://consensus.app), cross-viewpoint verification, best-3 viewpoint triangulation, and structured updates to project markdown.
 
-**Version:** 1.3.1
+**Version:** 1.4.1
 
 ## 30-second start
 

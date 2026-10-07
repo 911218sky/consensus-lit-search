@@ -81,6 +81,18 @@ for doi in 10.1051/aacus/2025055 10.1097/aud.0000000000001870 10.1080/14992027.2
 done
 ```
 
+## Paper search + New Citation Graph smoke test (2026-10-07)
+
+Live UI confirmation (no Pro quota burned):
+
+| Step | URL / UI | Result |
+|------|----------|--------|
+| Paper search | `https://consensus.app/quick/` · subtitle *Find papers using phrases, keywords, title, or authors* | Query `Carillo Doutres occlusion effect 2020 JASA bone-conducted` → Carillo 2020 first hit + related OE/BC list |
+| New Citation Graph | `https://consensus.app/graph/` · heading **New Citation Graph** | Seed DOI `10.1121/10.0001237` → **Seed** → **Generate graph** |
+| Graph output | Density **Low** · **Papers (20)** · auto title *Bone conduction hearing* · cluster `2020 · Carillo et al.` | Neighbors include Stenfelt BC models, Sgard OE FE, Berger REAT, Keidser venting, COPROD comfort, earcanal impedance — harvest titles before Clear |
+
+**Agent notes from this run:** Paper-search **Explore graph** may be `pointer-events: none` → fall back to `/graph/` + DOI seed. Graph **Ask** / bottom **Ask these papers...** can enter Pro path — do not click unless user wants synthesis.
+
 ## Stop rules (used this round)
 
 - User asked to keep the tree small → core 4+5; rest in a runner-up table

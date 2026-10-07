@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.1 - 2026-10-07
+
+- **Paper search** documented: Tools → `/quick/`, list-only harvest without Pro quota; MCP sequence, query tips, session capture mode.
+- **Citation Graph / New Citation Graph** documented: seed-based citation neighborhood (not keywords), density 20/40/60, graphs not persisted in beta — harvest DOIs before leave.
+- **SKILL.md**: mode chooser (Pro / Deep / Paper search / Citation Graph); checklist 1b / 3b; triggers and description updated; version 1.4.1.
+- **examples.md**: 2026-10-07 live smoke test for Paper search + New Citation Graph.
+- **reference.md**: tool chooser table; session card fields for Graph seeds/neighbors.
+
 ## 1.3.1 - 2026-09-16
 
 - **English-only skill prose:** rewrote [browser-pdf-download.md](browser-pdf-download.md) and [examples.md](examples.md) in full English (Chinese only as literal project file paths).

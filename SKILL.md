@@ -2,21 +2,24 @@
 name: consensus-lit-search
 description: >
   Multi-session literature search on Consensus.app via cursor-ide-browser MCP
-  (see browser-consensus.md first), with cross-viewpoint verification, debate-map
-  synthesis, DOI validation, best-3 viewpoint triangulation, runner-up tiering,
-  legal OA/PDF download to project pdfs/ (see browser-pdf-download.md for
-  OpenAlex/Unpaywall/curl and browser-fetch when DataDome blocks), local path
-  indexing, and structured updates to project markdown. Use when the user asks
-  to find papers, download PDFs, fetch full text, verify debates, compare
-  opposing claims, deep-dive similar work, cross-check with Consensus, search
-  with browser, or update literature-review documents. Trigger phrases:
-  Consensus, browser, download PDF, full text, OA, literature folder, DataDome,
+  (see browser-consensus.md first), with Pro/Deep synthesis, Paper search
+  (keyword/title/author/DOI lists without Pro quota), Citation Graph / New
+  Citation Graph (seed-based citation neighborhoods; not keyword search),
+  cross-viewpoint verification, debate-map synthesis, DOI validation, best-3
+  viewpoint triangulation, runner-up tiering, legal OA/PDF download to project
+  pdfs/ (see browser-pdf-download.md), local path indexing, and structured
+  updates to project markdown. Use when the user asks to find papers, download
+  PDFs, fetch full text, verify debates, compare opposing claims, deep-dive
+  similar work, cross-check with Consensus, Paper search, Citation Graph,
+  citation neighborhood, search with browser, or update literature-review
+  documents. Trigger phrases: Consensus, browser, Paper search, Citation Graph,
+  New Citation Graph, download PDF, full text, OA, literature folder, DataDome,
   cross-viewpoint verification, debate map, best-3 triangle, deep dive,
   counter-evidence.
 license: AGPL-3.0-or-later
 metadata:
   short-description: Consensus multi-session lit search with viewpoint triangulation
-  version: 1.3.1
+  version: 1.4.1
 ---
 
 # Consensus Literature Search
@@ -27,9 +30,13 @@ Search academic literature through **multiple independent Consensus sessions**, 
 
 **Using Consensus in Cursor?** Open **[browser-consensus.md](browser-consensus.md)** — 60-second MCP sequence, UI map, wait/extract rules, failure fixes.
 
+**Need a paper list only (no synthesis)?** Sidebar **Tools → Paper search** — phrases / keywords / title / authors / DOI; **does not** burn a Pro message. See [browser-consensus.md § Paper search](browser-consensus.md#paper-search-tools--no-pro-quota).
+
+**Need citation neighborhood of known seeds?** Sidebar **Tools → Citation Graph** (or paper drawer → Citation Graph) — up to 5 seeds, density 20/40/60; ranking = direct citation + co-citation + bibliographic coupling (**not** keywords). Graphs **not saved** in beta — harvest DOIs before leaving. See [browser-consensus.md § Citation Graph](browser-consensus.md#citation-graph--new-citation-graph-tools--citation-neighborhood).
+
 **Need PDFs / full text?** Open **[browser-pdf-download.md](browser-pdf-download.md)** — OpenAlex OA → curl → browser `fetch`+base64 when DataDome/403; index local paths; never claim full-text without a real PDF.
 
-**Minimal sequence (MCP server `cursor-ide-browser`):**
+**Minimal sequence — Pro message (MCP server `cursor-ide-browser`):**
 
 1. `browser_tabs` list → reuse Consensus tab if any
 2. `browser_navigate` → `https://consensus.app` (**never** hand-build `/search/slug/` URLs — they 404 without hash)
@@ -39,6 +46,15 @@ Search academic literature through **multiple independent Consensus sessions**, 
 6. **New Thread** per debate axis; repeat
 7. After ★★★ / user “download all PDFs”: follow [browser-pdf-download.md](browser-pdf-download.md); prefer project `pdfs/` over re-fetching
 
+**Mode chooser (pick before searching):**
+
+| Need | Mode | Quota |
+|------|------|--------|
+| Debate synthesis / Meter / best-3 | **Pro message** (Deep OFF) | Pro message |
+| Broad lit review strategy | **Deep** (user asked) | Deep review |
+| Browse / author / DOI / Boolean list | **Paper search** | Unlimited (abstract list) |
+| Related work around trusted seeds | **Citation Graph** | Graph (not persisted in beta) |
+
 **Stop / degrade** if login blocked, no synthesis after retries, or no browser MCP — see [degradation path](#degradation-path-no-browser-mcp--consensus-blocked). Never invent session URLs or meter numbers.
 
 ## When to use
@@ -47,6 +63,7 @@ Search academic literature through **multiple independent Consensus sessions**, 
 - Picking **best 3 papers** that represent distinct positions
 - Updating a project literature markdown file after Consensus exploration
 - User says: use Consensus, cross-viewpoint verification, debate map, best-3, deep dive, counter-evidence
+- User says: Paper search, Citation Graph, New Citation Graph, citation neighborhood, seed papers
 - User says: download PDF, full text, OA, put papers in literature folder, DataDome / curl 403
 
 ## Non-negotiables
@@ -81,14 +98,16 @@ Copy and track:
 ```
 Progress:
 - [ ] 1. Scope: claim, debate axes, year filter, output file path, mode (lite|full)
+- [ ] 1b. Tool plan: Pro / Deep / Paper search / Citation Graph (or mix — Graph+Paper first to save Pro)
 - [ ] 2. Confirm Consensus access OR activate degradation path
 - [ ] 3. Open ≥1 Consensus session per debate axis ([browser-consensus.md](browser-consensus.md))
+- [ ] 3b. Optional: Paper search for candidate harvest; Citation Graph on ★★★ seeds (harvest DOIs before leave)
 - [ ] 4. Extract: synthesis, meter, key papers, FOR/AGAINST if shown; Snapshot tab for best-3/★★☆ only
 - [ ] 5. Crossref-verify DOIs (OpenAlex only if budget allows)
 - [ ] 6. Pick best-3 triangle (3 non-overlapping viewpoints for THIS topic)
 - [ ] 7. Tier runners-up (★★★ / ★★☆ / ★☆☆ or equivalent)
 - [ ] 8. Update project MD sections (template in reference.md)
-- [ ] 9. Log session URLs with hash IDs (only if real sessions ran)
+- [ ] 9. Log session URLs with hash IDs (only if real sessions ran); Graph = seed+neighbor DOI list
 - [ ] 10. Mark evidence scope honestly (abstract vs full text)
 - [ ] 11. (If user asked for PDFs) Download ★★★ / listed DOIs via [browser-pdf-download.md](browser-pdf-download.md); update local path index
 ```

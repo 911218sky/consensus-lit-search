@@ -89,6 +89,8 @@ After `browser_snapshot`, look for these **names** (refs change every page — a
 | Snapshot tab | `button`, name `Snapshot` | Per-paper Field/Value table (uses Snapshot quota) |
 | Follow-up box | `textbox`, `Ask a follow up...` | Same-thread narrow follow-up only |
 | Thread in sidebar | `link` with short slug title | Confirms session saved |
+| **Paper search** | sidebar **Tools** → `link` name `Paper search` → URL `https://consensus.app/quick/` | Keyword/title/author/DOI list — **no** Pro synthesis |
+| **Citation Graph** | sidebar **Tools** → `link` name `Citation Graph` → URL `https://consensus.app/graph/` (or paper drawer **Citation Graph**) | Seed-based citation network — **no** keyword matching |
 
 **URL after successful search:**
 
@@ -197,6 +199,118 @@ Source: [Consensus subscription plans](https://help.consensus.app/en/articles/10
 - **`full` mode:** 4–7 Pro sessions — **warn user** this may exhaust the monthly Pro budget on Free.
 - Each **Study Snapshot** (opening Snapshot tab on a paper) counts toward the 10/month limit on Free.
 - **Paper search** (sidebar → Tools → Paper search) finds papers **without** burning a Pro message — use when you only need a list.
+- **Citation Graph** (sidebar → Tools → Citation Graph) explores citation neighborhoods of seed papers — **does not** use keyword matching; graphs are **not saved** in beta (refresh clears them — harvest DOIs before leaving).
+
+---
+
+## Paper search (Tools → no Pro quota)
+
+**UI label (2026):** heading **Paper search** · subtitle *Find papers using phrases, keywords, title, or authors* · URL `https://consensus.app/quick/` · sidebar Tools → **Paper search**.
+
+**When to use:** Need a paper list only (title / author / DOI / keywords / Boolean); harvest candidates before a Pro debate; check whether a known paper is indexed; expand ★★☆ runners-up without burning Pro messages.
+
+**When NOT to use:** Need synthesis, Consensus Meter, FOR/AGAINST debate map, or full-text-backed Pro answer → use **Pro message** instead.
+
+**Official help:** [How to Search & Best Practices](https://help.consensus.app/en/articles/9922660-how-to-search-best-practices) — Paper search = list of relevant papers **without** an AI summary.
+
+### Live UI cues (re-snapshot; refs change)
+
+| Element | Snapshot hint |
+|---------|---------------|
+| Search box | `textbox` name `Search for papers...` |
+| Submit | `button` `Submit quick search` (disabled until box has text) |
+| Mode chips (home empty state) | `Author search` · `Emerging topics` · `Phrase search` |
+| Results | heading `Results` + paper `link`s with KEY TAKEAWAY |
+| Views | radio `Default` / `Compact` |
+| Per-paper | `Explore graph` · `Save paper` · `PDF` / `Full text` · `Copy link` |
+| Follow-on Pro | bottom `Ask these papers...` (can burn Pro — only if user wants synthesis on this list) |
+
+### MCP sequence
+
+```
+1. browser_navigate https://consensus.app/quick/  (or click sidebar Tools → Paper search)
+2. browser_lock
+3. browser_snapshot → confirm heading "Paper search" + subtitle (not Pro "Ask the research")
+4. (If arrived via home click that did not navigate: navigate directly to /quick/)
+5. Optional: click Author search / Phrase search chip if that mode fits
+6. browser_fill textbox "Search for papers...", e.g.:
+   - title fragment: "occlusion effect bone-conducted"
+   - author+year: "Carillo Doutres 2020"
+   - DOI: "10.1121/10.0001237"
+   - Boolean: occlusion AND "acoustic mass" AND earmold
+7. browser_click "Submit quick search" → wait ≤3× snapshot cycles (~5–8 s)
+8. Harvest: titles + KEY TAKEAWAY from Results list; note PDF/Full text availability
+9. Optional: click "Explore graph" on a hit → jumps to Citation Graph with that seed
+10. Save address-bar URL if stable; else note "Paper search — query + top titles/DOIs"
+11. Crossref-verify DOIs before writing to project MD
+12. browser_lock unlock
+```
+
+**Query tips (Paper search):**
+
+| Good | Bad |
+|------|-----|
+| Exact title fragment or DOI | Long yes/no research question (use Pro) |
+| `Author YEAR` + 2–3 topic words | Asking for a literature synthesis |
+| Boolean: `vent AND "occlusion effect" AND hearing` | Dumping five debate axes in one box |
+
+**Record in session capture card:** `Mode: Paper search only` — no Meter; evidence = abstract-level list unless you open Snapshot/full text later. Do **not** treat `Ask these papers...` as free — it is a Pro path.
+
+---
+
+## Citation Graph / New Citation Graph (Tools → citation neighborhood)
+
+**UI entry points (all valid):**
+- Sidebar Tools → **Citation Graph** → `https://consensus.app/graph/` (empty canvas → add seeds; UI may say **New Citation Graph**)
+- Paper search Results → per-paper **Explore graph** (auto-seeds that hit; if `pointer-events: none`, fall back to `/graph/` + Quick Search)
+- Paper drawer → **Citation Graph**
+
+**When to use:** You already trust 1–5 seed papers (e.g. Carillo 2020, Denk 2022, Yuan 2023) and want **related / foundational / follow-up** work via citation structure; find bridges between S／P／W literatures; catch papers keyword search missed.
+
+**When NOT to use:** Open-ended topic discovery with no seed → start with Paper search or Pro; need a written debate synthesis → Pro message (optionally after harvesting Graph DOIs).
+
+**Official help:** [Citation Graph](https://help.consensus.app/en/articles/13846077-citation-graph) · [docs](https://docs.consensus.app/core-features/citation-graph)
+
+**How ranking works (not keywords):**
+1. **Direct citation** — cites seed or cited by seed  
+2. **Co-citation** — appears with seed in others’ reference lists  
+3. **Bibliographic coupling** — shares references with seeds  
+
+### MCP sequence
+
+```
+1. browser_navigate https://consensus.app/graph/  (or click sidebar Tools → Citation Graph)
+2. browser_lock
+3. browser_snapshot → confirm Graph page (empty seeds or Quick Search)
+   OR open a paper drawer → click "Citation Graph" (auto-seeds that paper)
+4. (If home click did not navigate: use direct /graph/ URL)
+5. Add seeds (1–5):
+   - textbox `Start by searching for seed papers...` → DOI or exact title → `Submit quick search`
+   - On the hit: click **Seed** (checkbox may show checked)
+   - and/or pick from **Recently saved** list → **Seed**
+6. Click **Generate graph** (appears after ≥1 seed)
+7. Wait for layout (heading becomes topic label, e.g. `Bone conduction hearing`) → `browser_snapshot`
+8. Controls observed live: `Papers (N)` · `Density Low` · `Ask` · cluster chip (e.g. `2020 · Carillo et al. cluster`)
+9. Open **Papers** panel → tabs Results / Seeds / Excluded; harvest neighbor titles (Exclude noise; Seed useful neighbors; regenerate if needed)
+10. Optional: **Ask** (graph chat) — may use Pro path; only if user wants synthesis
+11. CRITICAL: Graphs are NOT saved in beta — harvest seed DOI + neighbor titles/DOIs BEFORE navigate/refresh/Clear
+12. Crossref-verify harvested DOIs
+13. browser_lock unlock
+```
+
+**How to read the map (agent notes):**
+
+| Cue | Meaning |
+|-----|---------|
+| Horizontal position | Time (left older → right newer) |
+| Node size | Citation count (approx.) |
+| Color | Seed cluster / 1-hop neighbors; gray ≈ bridge |
+| Opacity | Connectedness (faded = loose) |
+| Arrow | Points from citing paper → cited paper |
+
+**Multi-seed tip:** One seed = lineage of one idea; 2–5 seeds (e.g. S+P+W anchors) = **overlap / bridges** between literatures.
+
+**Record in session capture card:** `Mode: Citation Graph` — list seed DOIs, density (20/40/60), top neighbor DOIs, whether Chat was used; note `graph not persisted (beta)`.
 
 ### Pro messages — what you get
 
